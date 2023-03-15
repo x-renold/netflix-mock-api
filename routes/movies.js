@@ -27,7 +27,7 @@ router.get('/', async (req, res) => {
       {},
       {
         limit: req.query.pageSize, offset,
-        // populate: 'genre_ids'
+        populate: 'genre_ids'
       }
     );
     return res.status(200).json(movies);

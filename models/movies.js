@@ -7,7 +7,7 @@ const dataSchema = new mongoose.Schema({
   overview: String,
   release_date: Date,
   genre_ids: [{
-    type: Number,
+    type: mongoose.Types.ObjectId,
     ref: 'Genre'
   }],
   id: {
