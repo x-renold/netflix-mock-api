@@ -14,7 +14,11 @@ const dataSchema = new mongoose.Schema({
   password: {
     required: true,
     type: String
-  }
+  },
+  favouriteMovies: [{
+    type: mongoose.Types.ObjectId,
+    ref: 'Movie'
+  }]
 });
 
 module.exports = mongoose.model('User', dataSchema);

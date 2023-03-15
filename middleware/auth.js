@@ -10,6 +10,7 @@ const useAuth = async (req, res, next) => {
     if (!user) {
       throw new Error('User does not exist');
     } else {
+      req.user = user;
       next();
     }
   } catch {

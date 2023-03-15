@@ -11,7 +11,6 @@ router.get('/getMovies', async (req, res) => {
 
   await moviesModel.deleteMany({});
   const genres = await genreModel.find({})
-  console.log(genres)
   do {
     try {
       const { data } = await axios.get(`https://api.themoviedb.org/3/movie/popular?api_key=03732a642aba67864e7018998055639d&language=en-US&page=${page}`)
@@ -26,7 +25,6 @@ router.get('/getMovies', async (req, res) => {
       })
       const query = await moviesModel.insertMany(list);
       totalPage = data.total_pages;
-      console.log(query);
     } catch (err) {
       console.error(err);
     } finally {
