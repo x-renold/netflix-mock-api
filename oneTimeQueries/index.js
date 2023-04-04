@@ -26,7 +26,7 @@ router.get('/getMovies', async (req, res) => {
       const query = await moviesModel.insertMany(list);
       totalPage = data.total_pages;
     } catch (err) {
-      console.error(err);
+      console.error(err.message);
     } finally {
       page += 1;
     }
