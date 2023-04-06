@@ -83,13 +83,20 @@ router.get('/', async (req, res) => {
   if (!req.query.page || !req.query.pageSize) {
     return res.status(401).json({ message: 'Params missing' })
   }
+  const sort = {};
+  if (req.query.orderBy === 'vote') {
+    sort.vote_average = -1;
+  } else {
+    sort.popularity = -1;
+  }
   try {
     const offset = (Number(req.query.page) - 1) * Number(req.query.pageSize);
     const movies = await moviesModel.paginate(
       {},
       {
         limit: req.query.pageSize, offset,
-        populate: 'genre_ids'
+        populate: 'genre_ids',
+        sort: { vote_average: -1 }
       }
     );
     return res.status(200).json(movies);
