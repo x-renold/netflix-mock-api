@@ -83,20 +83,36 @@ router.get('/', async (req, res) => {
   if (!req.query.page || !req.query.pageSize) {
     return res.status(401).json({ message: 'Params missing' })
   }
-  const sort = {};
+  const sort = {}
+  let where = {};
   if (req.query.orderBy === 'vote') {
     sort.vote_average = -1;
+  } else if (req.query.orderBy === 'release_date') {
+    sort.release_date = -1;
+    if (!req.query.upcoming) {
+      where = { release_date: { $lt: new Date() } }
+    }
+  } else if (req.query.orderBy === 'name') {
+    sort.title = 1
   } else {
     sort.popularity = -1;
+  }
+  if (req.query.upcoming) {
+    where.release_date = { $gt: new Date() }
+  } else {
+    where.release_date = { $lt: new Date() }
+  }
+  if (req.query.genre) {
+    where.genre_ids = req.query.genre;
   }
   try {
     const offset = (Number(req.query.page) - 1) * Number(req.query.pageSize);
     const movies = await moviesModel.paginate(
-      {},
+      { ...where },
       {
         limit: req.query.pageSize, offset,
         populate: 'genre_ids',
-        sort: { vote_average: -1 }
+        sort
       }
     );
     return res.status(200).json(movies);
